@@ -1,0 +1,79 @@
+<nav class="navbar navbar-dark">
+    Khata-Book
+</nav>
+<div class="container" *ngIf = "authservice.currentUser">
+    <div class="row justify-content-center p-2">
+        <h1>Welcome to your dashboard!</h1>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" [(ngModel)]="customerName" placeholder="Enter Customer Name">
+    </div>
+    <div class="form-group">
+        <input type="number" class="form-control" [(ngModel)]="customerAge" placeholder="Enter Customer Balance">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" [(ngModel)]="customerAddress" placeholder="Any additional note">
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" (click)="CreateRecord()"
+            [disabled]="!customerName || !customerAge || !customerAddress">Add Record</button>
+    </div>
+    <div class="form-group">
+        <h4><b>{{message}}</b></h4>
+    </div>
+
+    <div class="row p-2">
+        <div class="col-md-12 p-2 justify-content-center">
+            <h4>All Customers:</h4>
+        </div>
+
+        <div class="col-md-3" *ngFor="let item of customer">
+
+            <div class="card" *ngIf="!item.isedit; else elseBlock">
+                <div class="card-body">
+                    <div class="card-title">
+                        Name: {{item.name}}
+                    </div>
+                    <div class="card-subtitle">
+                        Balance: {{item.age}}
+                    </div>
+                    <div class="card-text">
+                        Note: {{item.info}}
+                    </div>
+                    <br>
+                    <span>
+                        <a (click)="EditRecord(item)" class="btn btn-primary btn-xs text-white">Edit Record</a>
+                        <br>
+                        <br>
+                        <a (click)="Deletecustomer(item.id)" class="btn btn-danger btn-xs text-white">Delete Record</a>
+                    </span>
+                </div>
+            </div>
+
+            <ng-template #elseBlock>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            Edit Record
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="text" [(ngModel)]="item.editname" class="form-control">
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="number" [(ngModel)]="item.editage" class="form-control">
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="text" [(ngModel)]="item.editinfo" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <a class="btn btn-danger btn-xs text-white" (click)="item.isedit = false">Cancel</a>
+                        <a class="btn btn-primary btn-xs text-white" (click)="Updatarecord(item)">Update Record</a>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
